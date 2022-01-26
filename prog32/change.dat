@@ -1,0 +1,181 @@
+6,7d5
+< // 20220103CHANGED
+< 
+90a89
+> 
+127,138c126
+<  * @brief get Next Cell Head
+<  *
+<  * @param cell
+<  *
+<  * @return List
+<  */
+< List **getNextCellHead(Cell *cell){
+< 	return(&cell->next);
+< }
+< 
+< /**
+<  * @brief
+---
+>  * @brief print out the List Data
+143,160c131,133
+< int removeTail(List **head){
+< 	if(isEmptyList(*head) == 0 && isEmptyList(getNextCell(*head)) == 0){
+< 		removeTail(getNextCellHead(*head));
+< 	}else{
+< 		return(removeHead(head));
+< 	}
+< }
+< 
+< /**
+<  * @brief print all data in List
+<  *
+<  * @param head
+<  * @return int
+<  */
+< void printList(List *head){
+< 	if(isEmptyList(head)){
+< 		printf("\n");
+< 	}else{
+---
+> int printList(List *head){
+> 	List *p = head;
+> 	while(isEmptyList(head) == 0){
+162c135
+< 		if(!isEmptyList(getNextCell(head))){
+---
+> 		if(isEmptyList(getNextCell(head)) == 0){
+165c138
+< 		printList(getNextCell(head));
+---
+> 		head = getNextCell(head);
+166a140,141
+> 	head = p;
+> 	return(1);
+170c145
+<  * @brief
+---
+>  * @brief  insert Cell to head
+177,180c152,153
+< 	if(isEmptyList(*head) == 0 && getCellData(*head) < data){
+< 		insertUpOrder(getNextCellHead(*head),data);
+< 	}else{
+< 		return(insertHead(head,data));
+---
+> 	while(isEmptyList(*head) == 0 && getCellData(*head) < data){
+> 		head = getNextCellHead(*head);
+181a155
+> 	return(insertHead(head,data));
+185c159
+<  * @brief
+---
+>  * @brief get Next Cell Head
+187,204c161
+<  * @param head
+<  * @param data
+<  * @return int
+<  */
+< int removeSearch(List **head,int data){
+< 	if(isEmptyList(*head)){
+< 		return(0);
+< 	}else if(isEmptyList(*head) == 0 && isEmptyList(getNextCell(*head)) == 0 && getCellData(*head) != data){
+< 		removeSearch(getNextCellHead(*head),data);
+< 	}else if(getCellData(*head) == data){
+< 		return(removeHead(head));
+< 	}else{
+< 		return(0);
+< 	}
+< }
+< 
+< /**
+<  * @brief
+---
+>  * @param cell
+206,207c163
+<  * @param head
+<  * @return int
+---
+>  * @return List
+209,214c165,166
+< int countCells(List *head){
+< 	if(isEmptyList(head) == 0 && isEmptyList(getNextCell(head)) == 0){
+< 		return(countCells(getNextCell(head)) + 1);
+< 	}else{
+< 		return 1;
+< 	}
+---
+> List **getNextCellHead(Cell *cell){
+> 	return(&cell->next);
+218c170
+<  * @brief
+---
+>  * @brief remove List's data of tail
+223,229c175,177
+< int sumOfCellsData(List *head){
+< 	List *next;
+< 	if(isEmptyList(head) == 0 && isEmptyList(getNextCell(head)) == 0){
+< 		next = getNextCell(head);
+< 		return(getCellData(head) + sumOfCellsData(next));
+< 	}else{
+< 		return(getCellData(head));
+---
+> int removeTail(List **head){
+> 	while(isEmptyList(*head) == 0 && isEmptyList(getNextCell(*head)) == 0/*getNextCell(*head) != getEmptyList()*/){
+> 		head = getNextCellHead(*head);
+230a179
+> 	return(removeHead(head));
+234c183
+<  * @brief
+---
+>  * @brief remove all List's data
+239,240c188,189
+< 	if(isEmptyList(*head) == 0 && isEmptyList(getNextCell(*head)) == 0){
+< 		removeList(getNextCellHead(*head));
+---
+> 	while(isEmptyList(*head) == 0){
+> 		removeHead(head);
+242d190
+< 	removeHead(head);
+244,285d191
+< }
+< 
+< /**
+<  * @brief
+<  *
+<  * @param head
+<  * @param data
+<  * @return int
+<  */
+< int appendTail(List **head,int data){
+< 	if(isEmptyList(*head)){
+< 		return(insertHead(head,data));
+< 	}
+< 	if(isEmptyList(*head) == 0&&isEmptyList(getNextCell(*head)) == 0){
+< 		appendTail(getNextCellHead(*head),data);
+< 	}else{
+< 		Cell* next = createCell(data,getEmptyList());
+< 		if(isEmptyList(next)){
+< 			return(0);
+< 		}
+< 		setNextCell(*head,next);
+< 		return(1);
+< 	}
+< }
+< 
+< /**
+<  * @brief
+<  *
+<  * @param head
+<  * @return List*
+<  */
+< List *reverseList(List *head){
+< 	if(isEmptyList(head) == 0 && isEmptyList(getNextCell(head)) == 0){
+< 		List* p = reverseList(*getNextCellHead(head));
+< 		if(appendTail(&p,getCellData(head)) == 0){
+< 			removeList(&p);
+< 			return(getEmptyList());
+< 		}
+< 		return(p);
+< 	}else{
+< 		return(createCell(getCellData(head),getEmptyList()));
+< 	}
