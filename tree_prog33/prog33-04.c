@@ -50,14 +50,12 @@ int rmSearchNodeAll(Tree **root, int target)
 
     if (isEmptyTree(*root)) { // 指定した値を持つノードは存在しない
         return(0);
-    } else if (getNodeData(*root) == target) {
-        // 指定した値を持つノードが見つかった
-        rm_node = *root;
-        if (isEmptyTree(getSubTree(*root, 'R')) && isEmptyTree(getSubTree(*root, 'L'))) {
-                // 見つかったノードがリーフの場合、このノードを削除（実はこの処理は不要）
-                *root = getEmptyTree();
-                freeNode(&rm_node);
-            } else if (isEmptyTree(getSubTree(*root, 'R'))) {
+    } else{
+        int n;
+        if (getNodeData(*root) == target) {
+            // 指定した値を持つノードが見つかった
+            rm_node = *root;
+            if (isEmptyTree(getSubTree(*root, 'R'))) {
                 // 見つかったノードの右部分木が空木なので、このノードの左部分木でつなぎ替える
                 *root =  getSubTree(*root,'L');
                 freeNode(&rm_node);
@@ -71,16 +69,20 @@ int rmSearchNodeAll(Tree **root, int target)
                 setNodeData(*root,getNodeData(*most_left));
                 freeNode(most_left);
             }
-            return(1);
-        } else {
-        // 指定した値を持つノードを左部分木から探す
-        if (rmSearchNode(getSubTreeRoot(*root,'L'),target) == 1) {
-            return(1);
-        // 指定した値を持つノードを右部分木から探す
-        } else if (rmSearchNode(getSubTreeRoot(*root,'R'),target) == 1) {
-            return(1);
-        } else {
-            return(0);
+            if(!isEmptyTree(*root)){
+                n = rmSearchNodeAll(root,target);
+            }
+        }
+        if(!isEmptyTree(*root)){
+            // 指定した値を持つノードを左部分木から探す
+            int r,l;
+            r = rmSearchNodeAll(getSubTreeRoot(*root,'R'),target);
+            l = rmSearchNodeAll(getSubTreeRoot(*root,'L'),target);
+            if(r || l || n){
+                return(1);
+            } else {
+                return(0);
+            }
         }
     }
 }
