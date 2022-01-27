@@ -83,6 +83,8 @@ int rmSearchNodeAll(Tree **root, int target)
             } else {
                 return(0);
             }
+        }else{
+            return(0);
         }
     }
 }
