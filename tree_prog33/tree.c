@@ -113,6 +113,9 @@ Tree **getSubTreeRoot(Node *node, char target)
   }else if(target == 'R' || target == 'r'){
     return &node->right;
   }
+  Tree **ret;
+  *ret = getEmptyTree();
+  return(ret);
 }
 
 //-------------------------------------------------------------------------------
