@@ -109,9 +109,9 @@ Tree *getSubTree(Node *node, char target)
 Tree **getSubTreeRoot(Node *node, char target)
 {
   if(target == 'L' || target == 'l'){
-    return &(node->left);
+    return &node->left;
   }else if(target == 'R' || target == 'r'){
-    return &(node->right);
+    return &node->right;
   }
 }
 

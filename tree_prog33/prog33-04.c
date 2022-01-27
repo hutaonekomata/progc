@@ -57,11 +57,11 @@ int rmSearchNodeAll(Tree **root, int target)
             rm_node = *root;
             if (isEmptyTree(getSubTree(*root, 'R'))) {
                 // 見つかったノードの右部分木が空木なので、このノードの左部分木でつなぎ替える
-                *root =  getSubTree(*root,'L');
+                root =  getSubTreeRoot(*root,'L');
                 freeNode(&rm_node);
             } else if (isEmptyTree(getSubTree(*root, 'L'))) {
                 // 見つかったノードの左部分木が空木なので、このノードの右部分木でつなぎ替える
-                *root =  getSubTree(*root,'R');
+                root =  getSubTreeRoot(*root,'R');
                 freeNode(&rm_node);
             } else {
                 // 見つかったノードは２つの子を持つので、最左端のノードと交換
