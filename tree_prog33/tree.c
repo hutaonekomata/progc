@@ -30,8 +30,10 @@ Node *createNode(int data)
     return(getEmptyTree());
   }
   setNodeData(new,data);
-  new->left = getEmptyTree();
-  new->right = getEmptyTree();
+  // new->left = getEmptyTree();
+  // new->right = getEmptyTree();
+  setSubTree(new,getEmptyTree(),'L');
+  setSubTree(new,getEmptyTree(),'R');
   return new;
 }
 
@@ -163,7 +165,7 @@ void rmTree(Tree **root)
     rmTree(getSubTreeRoot(*root, 'L'));
     freeNode(root);
   }
-  freeNode(root);
+  // freeNode(root);
   return;
 }
 
@@ -215,6 +217,7 @@ void printTreeSub(Tree *root, int depth)
 int mkBalanceTree(Tree **root, int n)
 {
   if(n<=0){
+    *root = getEmptyTree();
     return(1);
   }
   int num;
@@ -223,7 +226,5 @@ int mkBalanceTree(Tree **root, int n)
   if(isEmptyTree(*root)){
     return(0);
   }
-  setSubTree(*root,getEmptyTree(),'L');
-  setSubTree(*root,getEmptyTree(),'R');
   return(mkBalanceTree(getSubTreeRoot(*root,'L'),n/2) && mkBalanceTree(getSubTreeRoot(*root,'R'),n-n/2-1) );
 }
