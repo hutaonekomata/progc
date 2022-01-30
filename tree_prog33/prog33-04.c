@@ -47,7 +47,6 @@ main()
 int rmSearchNodeAll(Tree **root, int target)
 {
     Tree *rm_node, **most_left;
-
     if (isEmptyTree(*root)) { // 指定した値を持つノードは存在しない
         return(0);
     } else{
@@ -72,25 +71,16 @@ int rmSearchNodeAll(Tree **root, int target)
                 freeNode(most_left);
             }
             judge = 1;
-        //    if(!isEmptyTree(*root)){
             n = rmSearchNodeAll(root,target);
-        //    }
         }
-        if(!isEmptyTree(*root)){
-            // 指定した値を持つノードを左部分木から探す
-            int r,l;
-            r = 0;
-            l = 0;
-            r = rmSearchNodeAll(getSubTreeRoot(*root,'R'),target);
-            l = rmSearchNodeAll(getSubTreeRoot(*root,'L'),target);
-            if(judge || r || l || n){
-                return(1);
-            } else {
-                return(0);
-            }
-        }else if(judge){
+        int r,l;
+        r = 0;
+        l = 0;
+        r = rmSearchNodeAll(getSubTreeRoot(*root,'R'),target);
+        l = rmSearchNodeAll(getSubTreeRoot(*root,'L'),target);
+        if(judge || r || l || n){
             return(1);
-        }else{
+        } else {
             return(0);
         }
     }
@@ -104,7 +94,10 @@ int rmSearchNodeAll(Tree **root, int target)
 Tree **mostLeftLeafRoot(Tree **root)
 {
     if (isEmptyTree(*root)) {
-        return(NULL);
+        Tree **ret = (Tree **)malloc(sizeof(Tree *) * 1);
+        *ret = (Tree *)malloc(sizeof(Tree) * 1);
+        *ret = getEmptyTree();
+        return(ret);
     } else if (isEmptyTree(getSubTree(*root,'L')) && isEmptyTree(getSubTree(*root,'R'))) {
         // (*root)がリーフのとき
         return(root);

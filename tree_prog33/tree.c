@@ -72,8 +72,10 @@ int getNodeData(Node *node)
 void setSubTree(Node *node, Tree *subtree, char target)
 {
   if(target == 'L' || target == 'l'){
+    node->left = (Tree *)malloc(sizeof(Tree) * 1);
     node->left = subtree;
   }else if(target == 'R' || target == 'r'){
+    node->right = (Tree *)malloc(sizeof(Tree) * 1);
     node->right = subtree;
   }
   return;
@@ -110,11 +112,21 @@ Tree *getSubTree(Node *node, char target)
 //-------------------------------------------------------------------------------
 Tree **getSubTreeRoot(Node *node, char target)
 {
+  if(isEmptyTree(node)){
+    Tree **ret = (Tree **)malloc(sizeof(Tree *) * 1);
+    *ret = (Tree *)malloc(sizeof(Tree) * 1);
+    *ret = getEmptyTree();
+    return(ret);
+  }
   if(target == 'L' || target == 'l'){
     return &(node->left);
   }else if(target == 'R' || target == 'r'){
     return &(node->right);
   }
+  Tree **ret = (Tree **)malloc(sizeof(Tree *) * 1);
+  *ret = (Tree *)malloc(sizeof(Tree) * 1);
+  *ret = getEmptyTree();
+  return(ret);
 }
 
 //-------------------------------------------------------------------------------
@@ -144,9 +156,6 @@ int isEmptyTree(Tree *root)
 //-------------------------------------------------------------------------------
 int freeNode(Node **node)
 {
-  if(isEmptyTree(*node)){
-    return 0;
-  }
   free(*node);
   *node = NULL;
   return 1;
