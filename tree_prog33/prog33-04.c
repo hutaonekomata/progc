@@ -44,44 +44,35 @@ main()
 //  ［戻り値］target が存在し、削除が成功したとき     : 1
 //            target がが存在せず、削除に失敗したとき : 0
 //-------------------------------------------------------------------------------
+/**
+ * @brief 実装
+ *          まず最左端と最右端までnodeを深くして、そこからnodeを削除し始める。削除してからnodeの削除をすると余分なことをしている判定になる。(実際手間が増えて余分)
+ */
 int rmSearchNodeAll(Tree **root, int target)
 {
-    Tree *rm_node, **most_left;
-    if (isEmptyTree(*root)) { // 指定した値を持つノードは存在しない
+    Tree *rm_node,**mostleft;
+    if(isEmptyTree(*root)){
         return(0);
-    } else{
-        int n,judge;
-        judge = 0;
-        n = 0;
-        if (getNodeData(*root) == target) {
-            // 指定した値を持つノードが見つかった
-            rm_node = *root;
-            if (isEmptyTree(getSubTree(*root, 'R'))) {
-                // 見つかったノードの右部分木が空木なので、このノードの左部分木でつなぎ替える
-                *root =  getSubTree(*root,'L');
-                freeNode(&rm_node);
-            } else if (isEmptyTree(getSubTree(*root, 'L'))) {
-                // 見つかったノードの左部分木が空木なので、このノードの右部分木でつなぎ替える
-                *root =  getSubTree(*root,'R');
-                freeNode(&rm_node);
-            } else {
-                // 見つかったノードは２つの子を持つので、最左端のノードと交換
-                most_left = mostLeftLeafRoot(root);
-                setNodeData(*root,getNodeData(*most_left));
-                freeNode(most_left);
-            }
-            judge = 1;
-            n = rmSearchNodeAll(root,target);
-        }
+    }else{
         int r,l;
-        r = 0;
-        l = 0;
         r = rmSearchNodeAll(getSubTreeRoot(*root,'R'),target);
         l = rmSearchNodeAll(getSubTreeRoot(*root,'L'),target);
-        if(judge || r || l || n){
+        if(getNodeData(*root) == target){
+            rm_node = *root;
+            if(isEmptyTree(getSubTree(*root, 'L'))){
+                *root = getSubTree(*root,'R');
+                freeNode(&rm_node);
+            }else if(isEmptyTree(getSubTree(*root, 'R'))){
+                *root = getSubTree(*root, 'L');
+                freeNode(&rm_node);
+            }else{
+                mostleft = mostLeftLeafRoot(root);
+                setNodeData(*root,getNodeData(*mostleft));
+                freeNode(mostleft);
+            }
             return(1);
-        } else {
-            return(0);
+        }else{
+            return(r || l);
         }
     }
 }
