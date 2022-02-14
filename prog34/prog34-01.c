@@ -13,23 +13,23 @@ main()
   int data, found;
 
   root = getEmptyTree();
-  // 既に格納されているデータを入力するまで二分探索木の生成を続ける 
+  // 既に格納されているデータを入力するまで二分探索木の生成を続ける
   do {
-    data = getint("追加データ: ");         // データの入力                             
+    data = getint("追加データ: ");         // データの入力
     putchar('\n');
-    found = mkBinSearchTree(&root, data);  // 二分探索木の生成                         
+    found = mkBinSearchTree(&root, data);  // 二分探索木の生成
     printf("found: %d\n\n", found);
-    printTree(root);                       // 木の表示                                 
+    printTree(root);                       // 木の表示
     putchar('\n');
-  } while (found == 0);                    // 入力データが既に存在していれば終了 
-  
-  printf("昇順：");
-  printUpOrder(root);                      // ノードの値を昇順に表示 
+  } while (found == 0);                    // 入力データが既に存在していれば終了
+
+  printf("昇順:");
+  printUpOrder(root);                      // ノードの値を昇順に表示
   putchar('\n');
-  printf("降順：");                        // ノードの値を降順に表示 
+  printf("降順:");                        // ノードの値を降順に表示
   printDownOrder(root);
   printf("\n\n");
-  
+
   rmTree(&root); // 生成した二分探索木を削除して終了
 
   return(0);
@@ -48,22 +48,22 @@ int mkBinSearchTree(Tree **root, int data)
 {
   Tree *new_node;
   int found;
-  
-  if (isEmptyTree(*root)) {  // 対象データがまだ木に格納されていないとき 
+
+  if (isEmptyTree(*root)) {  // 対象データがまだ木に格納されていないとき
     *root = createNode(data);
     if (isEmptyTree(*root)) {
       return(-1);            // ノード生成に失敗した
     }
     found = 0;
-  } else {			
-    if (data <                   ) {
-      // 対象データが部分木の根の値より小さいとき 
-      found =                                                  ;
+  } else {
+    if (data < getNodeData(*root)) {
+      // 対象データが部分木の根の値より小さいとき
+      found = mkBinSearchTree(getSubTreeRoot(*root,'L'), data);
     } else if (data > getNodeData(*root)) {
-      // 対象データが部分木の根の値より大きいとき 
-      found =                                                  ;
+      // 対象データが部分木の根の値より大きいとき
+      found = mkBinSearchTree(getSubTreeRoot(*root,'R'), data);
     } else {
-      // 対象データが部分木の根の値と一致したとき 
+      // 対象データが部分木の根の値と一致したとき
       found = 1;
     }
   }
@@ -80,6 +80,12 @@ int mkBinSearchTree(Tree **root, int data)
 //--------------------------------------------------------------------------
 void printUpOrder(Tree *root)
 {
+  if(!isEmptyTree(root)){
+    printUpOrder(getSubTree(root,'L'));
+    printf("%d ",getNodeData(root));
+    printUpOrder(getSubTree(root,'R'));
+  }
+  return;
 }
 
 //--------------------------------------------------------------------------
@@ -92,5 +98,10 @@ void printUpOrder(Tree *root)
 //--------------------------------------------------------------------------
 void printDownOrder(Tree *root)
 {
+  if(!isEmptyTree(root)){
+    printDownOrder(getSubTree(root, 'R'));
+    printf("%d ",getNodeData(root));
+    printDownOrder(getSubTree(root, 'L'));
+  }
   return;
 }

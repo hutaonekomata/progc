@@ -1,11 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <hamakou.h>
 #include <math.h>
 #include "tree.h"
 
 void printTreeSub(Tree *root, int depth);
 void printTree2Sub(Tree *root, int depth);
+
+// #define HomeWorking
+
+#ifndef HomeWorking
+
+#include <hamakou.h>
+
+#else
+
+int getint(char *c){
+  printf("%s",c);
+  int a;
+  scanf("%d",&a);
+  return(a);
+}
+
+#endif
 
 //-------------------------------------------------------------------------------
 // ① 空木を取得する
@@ -56,6 +72,7 @@ void setNodeData(Node *node, int data)
  *
  * @param node
  * @param num
+ *
  */
 int setNodeDataN(Node *node,int num){
   node->count = num;
