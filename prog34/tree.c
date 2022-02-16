@@ -1,11 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <hamakou.h>
 #include <math.h>
 #include "tree.h"
 
-void printTreeSub(Tree *root, int depth);
+void printTreeSub(Tree *root, int depth,int sub);
 void printTree2Sub(Tree *root, int depth);
+
+// #define HomeWorking
+
+#ifndef HomeWorking
+
+#include <hamakou.h>
+
+#else
+
+int getint(char *c){
+  printf("%s",c);
+  int a;
+  scanf("%d",&a);
+  return(a);
+}
+
+#endif
 
 //-------------------------------------------------------------------------------
 // ① 空木を取得する
@@ -56,6 +72,7 @@ void setNodeData(Node *node, int data)
  *
  * @param node
  * @param num
+ *
  */
 int setNodeDataN(Node *node,int num){
   node->count = num;
@@ -209,7 +226,7 @@ void rmTree(Tree **root)
 //-------------------------------------------------------------------------------
 void printTree(Tree *root)
 {
-  printTreeSub(root, 0);
+  printTreeSub(root, 0,0);
   return;
 }
 
@@ -220,17 +237,19 @@ void printTree(Tree *root)
 //  ［第２引数］depth : 表示対象部分木のレベル
 //  ［戻 り 値］なし
 //-------------------------------------------------------------------------------
-void printTreeSub(Tree *root, int depth)
+void printTreeSub(Tree *root, int depth,int sub)
 {
   int i;
 
   if (!isEmptyTree(root)) {
-    printTreeSub(getSubTree(root, 'R'), depth + 1);
+    printTreeSub(getSubTree(root, 'R'), depth + 1 , sub);
     for (i = 0; i < depth; i++) {
       printf("   ");
     }
-    printf("%d\n", getNodeData(root));
-    printTreeSub(getSubTree(root, 'L'), depth + 1);
+    printf("%d", getNodeData(root));
+    if(sub)printf("[%d]",getNodeDataN(root));
+    printf("\n");
+    printTreeSub(getSubTree(root, 'L'), depth + 1,sub);
   }
   return;
 }
@@ -242,7 +261,7 @@ void printTreeSub(Tree *root, int depth)
  */
 void printTree2(Tree *root)
 {
-  printTree2Sub(root, 0);
+  printTreeSub(root, 0,1);
   return;
 }
 
